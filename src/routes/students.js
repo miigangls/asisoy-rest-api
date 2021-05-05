@@ -32,4 +32,26 @@ router.post('/', async (req, res) => {
     })
 })
 
+router.post('/studentsByCourse', async (req, res) => {
+    let { COD } = req.body
+    await mysqlConnection.query(`SELECT * FROM alumno WHERE COD = ?`, [COD], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err);
+        }
+    })
+})
+
+
+router.get('/courses', async (req, res) => {
+    await mysqlConnection.query(`SELECT * FROM asignaturas`, (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err);
+        }
+    })
+})
+
 module.exports = router
