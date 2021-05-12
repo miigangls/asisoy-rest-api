@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     })
 })
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     let { CODALUM, ID_ALUMNO } = req.body
     await mysqlConnection.query(`SELECT * FROM alumno WHERE CODALUM = ? AND ID_ALUMNO = ?`, [CODALUM, ID_ALUMNO], (err, rows, fields) => {
         if (!err) {
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
     })
 })
 
-router.post('/studentsByCourse', async (req, res) => {
+router.post('/studentsBySubject', async (req, res) => {
     let { COD } = req.body
     await mysqlConnection.query(`SELECT * FROM alumno WHERE COD = ?`, [COD], (err, rows, fields) => {
         if (!err) {
@@ -43,8 +43,7 @@ router.post('/studentsByCourse', async (req, res) => {
     })
 })
 
-
-router.get('/courses', async (req, res) => {
+router.get('/subjects', async (req, res) => {
     await mysqlConnection.query(`SELECT * FROM asignaturas`, (err, rows, fields) => {
         if (!err) {
             res.json(rows)
@@ -53,5 +52,17 @@ router.get('/courses', async (req, res) => {
         }
     })
 })
+
+router.post('/subjectByStudent', async (req, res) => {
+    let { COD } = req.body
+    await mysqlConnection.query(`SELECT * FROM asignaturas WHERE COD = ?`, [COD], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err);
+        }
+    })
+})
+
 
 module.exports = router
