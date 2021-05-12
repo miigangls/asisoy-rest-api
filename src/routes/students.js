@@ -32,30 +32,9 @@ router.post('/login', async (req, res) => {
     })
 })
 
-router.post('/studentsBySubject', async (req, res) => {
-    let { COD } = req.body
-    await mysqlConnection.query(`SELECT * FROM alumno WHERE COD = ?`, [COD], (err, rows, fields) => {
-        if (!err) {
-            res.json(rows)
-        } else {
-            console.log(err);
-        }
-    })
-})
-
-router.get('/subjects', async (req, res) => {
-    await mysqlConnection.query(`SELECT * FROM asignaturas`, (err, rows, fields) => {
-        if (!err) {
-            res.json(rows)
-        } else {
-            console.log(err);
-        }
-    })
-})
-
 router.post('/subjectByStudent', async (req, res) => {
-    let { COD } = req.body
-    await mysqlConnection.query(`SELECT * FROM asignaturas WHERE COD = ?`, [COD], (err, rows, fields) => {
+    let { CODALUM } = req.body
+    await mysqlConnection.query(`select * from asignaturas inner join brectemp on asignaturas.COD = brectemp.ASIGNATURA where brectemp.CODALUM = ?`, [CODALUM], (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
@@ -64,5 +43,25 @@ router.post('/subjectByStudent', async (req, res) => {
     })
 })
 
+router.post('/studentsBysubject', async (req, res) => {
+    let { ASIGNATURA } = req.body
+    await mysqlConnection.query(`select * from alumno inner join brectemp on alumno.CODALUM = brectemp.CODALUM where brectemp.ASIGNATURA = ?`, [ASIGNATURA], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err);
+        }
+    })
+})
+
+router.get('/questions', async (req, res) => {
+    await mysqlConnection.query('SELECT * FROM Criterios', (err, rows, fields) => {
+        if (!err) {
+            res.json(rows)
+        } else {
+            console.log(err);
+        }
+    })
+})
 
 module.exports = router
