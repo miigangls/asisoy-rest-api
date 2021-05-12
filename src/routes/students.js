@@ -2,7 +2,7 @@ const express = require('express')
 , router = express.Router()
 , mysqlConnection = require('../database')
 
-router.get('/', async (req, res) => {
+router.get('/allStudents', async (req, res) => {
     await mysqlConnection.query('SELECT * FROM alumno', (err, rows, fields) => {
         if (!err) {
             res.json(rows)
