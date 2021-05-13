@@ -12,9 +12,9 @@ router.get('/allStudents', async (req, res) => {
     })
 })
 
-router.post('/login', async (req, res) => {
-    let { CODALUM, ID_ALUMNO } = req.body
-    await mysqlConnection.query(`SELECT * FROM alumno WHERE CODALUM = ? AND ID_ALUMNO = ?`, [CODALUM, ID_ALUMNO], (err, rows, fields) => {
+router.post('/login=:CODALUM/=:ID_ALUMNO', async (req, res) => {
+    let { CODALUM, ID_ALUMNO } = req.params
+    await mysqlConnection.query(`SELECT * FROM alumno WHERE CODALUM = ${CODALUM} AND ID_ALUMNO = ${ID_ALUMNO}`, (err, rows, fields) => {
         if (!err) {
             if(rows.length) {
                 res.json({
@@ -31,10 +31,10 @@ router.post('/login', async (req, res) => {
         }
     })
 })
-
-router.post('/subjectByStudent', async (req, res) => {
-    let { CODALUM } = req.body
-    await mysqlConnection.query(`select * from asignaturas inner join brectemp on asignaturas.COD = brectemp.ASIGNATURA where brectemp.CODALUM = ?`, [CODALUM], (err, rows, fields) => {
+//1203563381
+router.post('/subjectByStudent=:CODALUM', async (req, res) => {
+    let { CODALUM } = req.params
+    await mysqlConnection.query(`select * from asignaturas inner join brectemp on asignaturas.COD = brectemp.ASIGNATURA where brectemp.CODALUM = ${CODALUM}`, (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
@@ -43,8 +43,8 @@ router.post('/subjectByStudent', async (req, res) => {
     })
 })
 
-router.post('/studentsBysubject', async (req, res) => {
-    let { ASIGNATURA } = req.body
+router.post('/studentsBysubject=:ASIGNATURA', async (req, res) => {
+    let { ASIGNATURA } = req.params
     await mysqlConnection.query(`select * from alumno inner join brectemp on alumno.CODALUM = brectemp.CODALUM where brectemp.ASIGNATURA = ?`, [ASIGNATURA], (err, rows, fields) => {
         if (!err) {
             res.json(rows)
