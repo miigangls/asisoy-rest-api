@@ -15,7 +15,7 @@ router.get('/allStudents', async (req, res) => {
 router.post('/login', async (req, res) => {
     let { CODALUM, ID_ALUMNO } = req.body
     console.log(req.body)
-    await mysqlConnection.query(`SELECT * FROM alumno WHERE CODALUM = ${CODALUM} AND ID_ALUMNO = ${ID_ALUMNO}`, (err, rows, fields) => {
+    await mysqlConnection.query(`SELECT * FROM alumno AS al JOIN brectemp AS br on al.CODALUM = br.CODALUM WHERE al.CODALUM = ${CODALUM} AND al.ID_ALUMNO = ${ID_ALUMNO} LIMIT 1`, (err, rows, fields) => {
         if (!err) {
             if(rows.length) {
                 res.json({
@@ -33,9 +33,10 @@ router.post('/login', async (req, res) => {
     })
 })
 //1203563381
-router.post('/subjectByStudent', async (req, res) => {
-    let { CODALUM } = req.body
-    await mysqlConnection.query(`select * from asignaturas inner join brectemp on asignaturas.COD = brectemp.ASIGNATURA where brectemp.CODALUM = ${CODALUM}`, (err, rows, fields) => {
+router.get('/subjectByStudent', async (req, res) => {
+    await mysqlConnection.query(`select a.AREAS_ASIG, a.COD, a.orden as asignaturas, dg.ASIGNATURA as docente_grupo, d.NOMBRES, 
+        d.APELLIDOS, d.NUM_DOC FROM asignaturas AS a, docente_grupo AS dg, docentes AS d WHERE dg.GRUPO = ${req.body.curso} AND dg.DOCENTE = d.NUM_DOC 
+        AND dg.ASIGNATURA=a.COD and a.COD != 98;`, (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
@@ -56,7 +57,7 @@ router.post('/studentsBysubject', async (req, res) => {
 })
 
 router.get('/questions', async (req, res) => {
-    await mysqlConnection.query('SELECT * FROM Criterios', (err, rows, fields) => {
+    await mysqlConnection.query(`SELECT orden,codcriterio,criterio from Criterios where codtevaluacion = ${req.body.codtevaluacion} AND active = 1  order by orden;`, (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
