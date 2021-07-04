@@ -63,7 +63,7 @@ router.post('/questions', async (req, res) => {
         if (!err) {
             res.status(200).send({status:200,  message: "", data: rows});
         } else {
-            res.status(500).send({status:500, error:"Internal Server Error", message: err.mes, data: []});
+            res.status(500).send({status:500, error:"Internal Server Error", message: err, data: []});
             console.log(err);
         }
     })
