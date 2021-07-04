@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
     })
 })
 //1203563381
-router.get('/subjectByStudent', async (req, res) => {
+router.post('/subjectByStudent', async (req, res) => {
     const { CURSO } = req.body
     await mysqlConnection.query(`SELECT a.AREAS_ASIG, a.COD, a.orden AS asignaturas, dg.ASIGNATURA AS docente_grupo, d.NOMBRES, 
         d.APELLIDOS, d.NUM_DOC FROM asignaturas AS a, docente_grupo AS dg, docentes AS d WHERE dg.GRUPO = ? AND dg.DOCENTE = d.NUM_DOC 
