@@ -34,13 +34,14 @@ router.post('/login', async (req, res) => {
 })
 //1203563381
 router.get('/subjectByStudent', async (req, res) => {
-    await mysqlConnection.query(`select a.AREAS_ASIG, a.COD, a.orden as asignaturas, dg.ASIGNATURA as docente_grupo, d.NOMBRES, 
-        d.APELLIDOS, d.NUM_DOC FROM asignaturas AS a, docente_grupo AS dg, docentes AS d WHERE dg.GRUPO = ${req.body.curso} AND dg.DOCENTE = d.NUM_DOC 
-        AND dg.ASIGNATURA=a.COD and a.COD != 98;`, (err, rows, fields) => {
+    const { CURSO } = req.body
+    await mysqlConnection.query(`SELECT a.AREAS_ASIG, a.COD, a.orden AS asignaturas, dg.ASIGNATURA AS docente_grupo, d.NOMBRES, 
+        d.APELLIDOS, d.NUM_DOC FROM asignaturas AS a, docente_grupo AS dg, docentes AS d WHERE dg.GRUPO = ? AND dg.DOCENTE = d.NUM_DOC 
+        AND dg.ASIGNATURA=a.COD and a.COD != 98;`, [ CURSO ], (err, rows, fields) => {
         if (!err) {
-            res.json(rows)
+            res.status(200).send({status:200,  message: "", data: rows});
         } else {
-            console.log(err);
+            res.status(500).send({status:500, error:"Internal Server Error", message: err, data: []});
         }
     })
 })
