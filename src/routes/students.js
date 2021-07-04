@@ -59,7 +59,7 @@ router.post('/studentsBysubject', async (req, res) => {
 
 router.post('/questions', async (req, res) => {
     let { CODTEEVALUACION } = req.body
-    await mysqlConnection.query(`SELECT * FROM Criterios WHERE codtevaluacion = ?  AND activo = 1 ORDER BY ASC;`, [CODTEEVALUACION], (err, rows, fields) => {
+    await mysqlConnection.query(`SELECT * FROM Criterios WHERE codtevaluacion = ?  AND activo = ? ;`, [CODTEEVALUACION, 1], (err, rows, fields) => {
         if (!err) {
             res.status(200).send({status:200,  message: "", data: rows});
         } else {
