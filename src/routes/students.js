@@ -57,7 +57,8 @@ router.post('/studentsBysubject', async (req, res) => {
 })
 
 router.post('/questions', async (req, res) => {
-    await mysqlConnection.query(`SELECT orden,codcriterio,criterio from Criterios where codtevaluacion = ${req.body.codtevaluacion} AND active = 1  order by orden;`, (err, rows, fields) => {
+    let { codtevaluacion } = req.body
+    await mysqlConnection.query(`SELECT orden,codcriterio,criterio from Criterios where codtevaluacion = ? AND active = 1  order by orden;`, [codtevaluacion], (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
