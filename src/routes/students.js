@@ -56,12 +56,14 @@ router.post('/studentsBysubject', async (req, res) => {
     })
 })
 
+
 router.post('/questions', async (req, res) => {
     let { CODTEEVALUACION } = req.body
     await mysqlConnection.query(`SELECT * from Criterios where codtevaluacion = ? AND active = 1 order by orden;`, [CODTEEVALUACION], (err, rows, fields) => {
         if (!err) {
-            res.json(rows)
+            res.status(200).send({status:200,  message: "", data: rows});
         } else {
+            res.status(500).send({status:500, error:"Internal Server Error", message: err.mes, data: []});
             console.log(err);
         }
     })
