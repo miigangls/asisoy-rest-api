@@ -1,16 +1,16 @@
-const mysql = require('mysql')
+const mysql = require('mysql');
 
 const mysqlConnection = mysql.createConnection({
-    host: 'bb9yqnxe3cqzrfclyysu-mysql.services.clever-cloud.com',
-    user: 'u2c3gzfuaxcdonan',
-    password: 'Jpy5ZqcvngNAiPrBEEIH',
-    database: 'bb9yqnxe3cqzrfclyysu'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 })
 
 mysqlConnection.connect((err) => {
-    if(err) {
-        console.log(err)
-        return {}   
+    if (err) {
+        console.log(err.message)
+        return {}
     } else {
         console.log('DB is connected');
     }
