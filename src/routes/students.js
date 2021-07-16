@@ -66,4 +66,19 @@ router.post('/questions', async (req, res) => {
     })
 })
 
+
+router.post('/savequestions', async (req, res) => {
+    const { USER, SUBJECTS, QUESTIONS } = req.body
+    console.log(USER, SUBJECTS, QUESTIONS);
+
+    // await mysqlConnection.query(`SELECT * FROM Criterios WHERE codtevaluacion = ?  AND activo = ? ;`, [CODTEEVALUACION, 1], (err, rows, fields) => {
+    //     if (!err) {
+    //         res.status(200).send({ status: 200, data: rows });
+    //     } else {
+    //         res.status(500).send({ status: 500, error: "Internal Server Error", message: err, data: [] });
+    //         console.log(err);
+    //     }
+    // })
+})
+
 module.exports = router
